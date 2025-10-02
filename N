@@ -651,62 +651,100 @@ function OrionLib:MakeWindow(WindowConfig)
 		end
 	end)
 
-	AddConnection(MinimizeBtn.MouseButton1Up, function()
-		if Minimized then
-			TweenService:Create(MainWindow, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, 615, 0, 344)}):Play()
-			MinimizeBtn.Ico.Image = "rbxassetid://7072719338"
-			wait(.02)
-			MainWindow.ClipsDescendants = false
-			WindowStuff.Visible = true
-			WindowTopBarLine.Visible = true
-		else
-			MainWindow.ClipsDescendants = true
-			WindowTopBarLine.Visible = false
-			MinimizeBtn.Ico.Image = "rbxassetid://7072720870"
+	-- SHOW/HIDE BUTTON: Square, draggable, red border, with background image, left of main window
 
-			TweenService:Create(MainWindow, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, WindowName.TextBounds.X + 140, 0, 50)}):Play()
-			wait(0.1)
-			WindowStuff.Visible = false	
-		end
-		Minimized = not Minimized    
-	end)
+-- You can adjust these values as you wish
+local BUTTON_SIZE = 60
+local BUTTON_LEFT_OFFSET = 80 -- px left of main window
 
-	local function LoadSequence()
-		MainWindow.Visible = false
-		local LoadSequenceLogo = SetProps(MakeElement("Image", WindowConfig.IntroIcon), {
-			Parent = Orion,
-			AnchorPoint = Vector2.new(0.5, 0.5),
-			Position = UDim2.new(0.5, 0, 0.4, 0),
-			Size = UDim2.new(0, 28, 0, 28),
-			ImageColor3 = Color3.fromRGB(255, 255, 255),
-			ImageTransparency = 1
-		})
+-- Create the button
+local ShowHideBtn = Instance.new("ImageButton")
+ShowHideBtn.Name = "OrionShowHideBtn"
+ShowHideBtn.Size = UDim2.new(0, BUTTON_SIZE, 0, BUTTON_SIZE)
+ShowHideBtn.Position = MainWindow.Position - UDim2.new(0, BUTTON_LEFT_OFFSET, 0, 0)
+ShowHideBtn.BackgroundColor3 = Color3.fromRGB(33,33,33)
+ShowHideBtn.Image = "rbxassetid://YOUR_IMAGE_ID" -- <-- Set your image ID here
+ShowHideBtn.BorderSizePixel = 0
+ShowHideBtn.Parent = Orion
+ShowHideBtn.Visible = false -- start hidden, appears when window is hidden
 
-		local LoadSequenceText = SetProps(MakeElement("Label", WindowConfig.IntroText, 14), {
-			Parent = Orion,
-			Size = UDim2.new(1, 0, 1, 0),
-			AnchorPoint = Vector2.new(0.5, 0.5),
-			Position = UDim2.new(0.5, 19, 0.5, 0),
-			TextXAlignment = Enum.TextXAlignment.Center,
-			Font = Enum.Font.GothamBold,
-			TextTransparency = 1
-		})
+-- Red border
+local border = Instance.new("UIStroke")
+border.Color = Color3.fromRGB(255, 0, 0)
+border.Thickness = 3
+border.Parent = ShowHideBtn
 
-		TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0, Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
-		wait(0.8)
-		TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -(LoadSequenceText.TextBounds.X/2), 0.5, 0)}):Play()
-		wait(0.3)
-		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
-		wait(2)
-		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
-		MainWindow.Visible = true
-		LoadSequenceLogo:Destroy()
-		LoadSequenceText:Destroy()
-	end 
+-- Square (remove UICorner if you want sharp corners)
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 10)
+corner.Parent = ShowHideBtn
 
-	if WindowConfig.IntroEnabled then
-		LoadSequence()
-	end	
+-- Drag Logic
+local dragging = false
+local dragStart, startPos
+ShowHideBtn.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = ShowHideBtn.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - dragStart
+        ShowHideBtn.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+-- Show/hide logic
+local UIHidden = false -- Make sure this is in scope and controls your main window
+
+-- Replace your "Close" button logic with:
+AddConnection(CloseBtn.MouseButton1Up, function()
+    MainWindow.Visible = false
+    UIHidden = true
+    ShowHideBtn.Visible = true
+    OrionLib:MakeNotification({
+        Name = "Interface Hidden",
+        Content = "Click the red-bordered button to reopen the interface",
+        Time = 5
+    })
+    WindowConfig.CloseCallback()
+end)
+
+-- Show the window and hide the button when button is clicked
+ShowHideBtn.MouseButton1Click:Connect(function()
+    MainWindow.Visible = true
+    UIHidden = false
+    ShowHideBtn.Visible = false
+end)
+
+-- (Optional) RightShift hotkey support
+AddConnection(UserInputService.InputBegan, function(Input)
+    if Input.KeyCode == Enum.KeyCode.RightShift and UIHidden then
+        MainWindow.Visible = true
+        UIHidden = false
+        ShowHideBtn.Visible = false
+    end
+end)
+
+-- Optional: If you want the button to always be on top, you can set its ZIndex
+ShowHideBtn.ZIndex = 100
+
+-- Optional: If your MainWindow can move, you can reposition the button relative to main window when showing
+local function updateButtonPosition()
+    ShowHideBtn.Position = MainWindow.Position - UDim2.new(0, BUTTON_LEFT_OFFSET, 0, 0)
+end
+MainWindow:GetPropertyChangedSignal("Position"):Connect(function()
+    if not dragging and not MainWindow.Visible then
+        updateButtonPosition()
+    end
+end)
 
 	local TabFunction = {}
 	function TabFunction:MakeTab(TabConfig)

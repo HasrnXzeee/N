@@ -654,25 +654,19 @@ function OrionLib:MakeWindow(WindowConfig)
 	-- SHOW/HIDE BUTTON: Square, draggable, red border, with background image, left of main window
 
 -- You can adjust these values as you wish
--- SHOW/HIDE BUTTON: Square, draggable, red border, with background image, left of main window
-
--- SHOW/HIDE BUTTON: Square, draggable, red border, with background image, left of main window
-
--- SHOW/HIDE BUTTON: Square, draggable, red border, with background image, left of main window
-
 local BUTTON_SIZE = 60
 local BUTTON_LEFT_OFFSET = 80 -- px left of main window
 
+-- Create the button
 local ShowHideBtn = Instance.new("ImageButton")
 ShowHideBtn.Name = "OrionShowHideBtn"
 ShowHideBtn.Size = UDim2.new(0, BUTTON_SIZE, 0, BUTTON_SIZE)
 ShowHideBtn.Position = MainWindow.Position - UDim2.new(0, BUTTON_LEFT_OFFSET, 0, 0)
 ShowHideBtn.BackgroundColor3 = Color3.fromRGB(33,33,33)
-ShowHideBtn.Image = "rbxassetid://YOUR_IMAGE_ID" -- <-- Set your image ID here
+ShowHideBtn.Image = "https://www.roblox.com/Thumbs/Asset.ashx?width=420&height=420&assetId=94371101129415" -- <-- Set your image ID here
 ShowHideBtn.BorderSizePixel = 0
 ShowHideBtn.Parent = Orion
-ShowHideBtn.ZIndex = 100
-ShowHideBtn.Visible = true -- always visible
+ShowHideBtn.Visible = false -- start hidden, appears when window is hidden
 
 -- Red border
 local border = Instance.new("UIStroke")
@@ -680,12 +674,12 @@ border.Color = Color3.fromRGB(255, 0, 0)
 border.Thickness = 3
 border.Parent = ShowHideBtn
 
--- Square with slight rounding
+-- Square (remove UICorner if you want sharp corners)
 local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(0, 10)
 corner.Parent = ShowHideBtn
 
--- Draggable logic
+-- Drag Logic
 local dragging = false
 local dragStart, startPos
 ShowHideBtn.InputBegan:Connect(function(input)
@@ -707,22 +701,48 @@ game:GetService("UserInputService").InputChanged:Connect(function(input)
     end
 end)
 
--- Show/hide main window on button click
-local UIHidden = false -- Make sure UIHidden is in scope and controls your main window
+-- Show/hide logic
+local UIHidden = false -- Make sure this is in scope and controls your main window
 
-ShowHideBtn.MouseButton1Click:Connect(function()
-    UIHidden = not MainWindow.Visible
-    MainWindow.Visible = not MainWindow.Visible
+-- Replace your "Close" button logic with:
+AddConnection(CloseBtn.MouseButton1Up, function()
+    MainWindow.Visible = false
+    UIHidden = true
+    ShowHideBtn.Visible = true
+    OrionLib:MakeNotification({
+        Name = "Interface Hidden",
+        Content = "Click the red-bordered button to reopen the interface",
+        Time = 5
+    })
+    WindowConfig.CloseCallback()
 end)
 
--- Remove the fold/minimize button completely (comment out or delete any code related to MinimizeBtn)
+-- Show the window and hide the button when button is clicked
+ShowHideBtn.MouseButton1Click:Connect(function()
+    MainWindow.Visible = true
+    UIHidden = false
+    ShowHideBtn.Visible = false
+end)
 
--- You may also remove hotkey logic for hiding/showing the window if you want only the button to control it.
+-- (Optional) RightShift hotkey support
+AddConnection(UserInputService.InputBegan, function(Input)
+    if Input.KeyCode == Enum.KeyCode.RightShift and UIHidden then
+        MainWindow.Visible = true
+        UIHidden = false
+        ShowHideBtn.Visible = false
+    end
+end)
 
--- If you want the button to update its position when the window moves (when open):
+-- Optional: If you want the button to always be on top, you can set its ZIndex
+ShowHideBtn.ZIndex = 100
+
+-- Optional: If your MainWindow can move, you can reposition the button relative to main window when showing
+local function updateButtonPosition()
+    ShowHideBtn.Position = MainWindow.Position - UDim2.new(0, BUTTON_LEFT_OFFSET, 0, 0)
+end
 MainWindow:GetPropertyChangedSignal("Position"):Connect(function()
-    if MainWindow.Visible then
-        ShowHideBtn.Position = MainWindow.Position - UDim2.new(0, BUTTON_LEFT_OFFSET, 0, 0)
+    if not dragging and not MainWindow.Visible then
+        updateButtonPosition()
     end
 end)
 
@@ -1460,7 +1480,7 @@ end
 				local ColorSelection = Create("ImageLabel", {
 					Size = UDim2.new(0, 18, 0, 18),
 					Position = UDim2.new(select(3, Color3.toHSV(Colorpicker.Value))),
-					ScaleType = Enum.ScaleType.Fit
+					ScaleType = Enum.ScaleType.Fit,
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					BackgroundTransparency = 1,
 					Image = "http://www.roblox.com/asset/?id=4805639000"

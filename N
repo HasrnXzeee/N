@@ -658,6 +658,8 @@ function OrionLib:MakeWindow(WindowConfig)
 
 -- SHOW/HIDE BUTTON: Square, draggable, red border, with background image, left of main window
 
+-- SHOW/HIDE BUTTON: Square, draggable, red border, with background image, left of main window
+
 local BUTTON_SIZE = 60
 local BUTTON_LEFT_OFFSET = 80 -- px left of main window
 
@@ -711,17 +713,6 @@ local UIHidden = false -- Make sure UIHidden is in scope and controls your main 
 ShowHideBtn.MouseButton1Click:Connect(function()
     UIHidden = not MainWindow.Visible
     MainWindow.Visible = not MainWindow.Visible
-end)
-
--- Remove the fold/minimize button completely (comment out or delete any code related to MinimizeBtn)
-
--- You may also remove hotkey logic for hiding/showing the window if you want only the button to control it.
-
--- If you want the button to update its position when the window moves (when open):
-MainWindow:GetPropertyChangedSignal("Position"):Connect(function()
-    if MainWindow.Visible then
-        ShowHideBtn.Position = MainWindow.Position - UDim2.new(0, BUTTON_LEFT_OFFSET, 0, 0)
-    end
 end)
 
 -- Remove the fold/minimize button completely (comment out or delete any code related to MinimizeBtn)

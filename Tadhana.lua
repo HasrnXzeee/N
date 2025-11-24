@@ -13,7 +13,8 @@ function UILibrary.new(title)
 	ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-	local MainFrame = Instance.new("Frame") MainFrame.Name = "MainFrame" MainFrame.Size = UDim2.new(0, 500, 0, 350) MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175) MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30) MainFrame.BackgroundTransparency = 0.6 -- <---- NEW LINE FOR TRANSPARENCY MainFrame.BorderSizePixel = 0 MainFrame.Parent = ScreenGui
+	local MainFrame = Instance.new("Frame") MainFrame.Name = "MainFrame" MainFrame.Size = UDim2.new(0, 500, 0, 350) MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175) MainFrame.BackgroundColor3 = Color3.fromRGB(90, 20, 20) MainFrame.BackgroundTransparency = 0.55 MainFrame.BorderSizePixel = 0 MainFrame.Parent = ScreenGui 
+
 
 	local UICorner = Instance.new("UICorner")
 	UICorner.CornerRadius = UDim.new(0, 8)
@@ -65,13 +66,7 @@ function UILibrary.new(title)
 	CloseButton.Text = "×"
 	CloseButton.Parent = TitleBar
 
-	local TabContainer = Instance.new("Frame")
-	TabContainer.Name = "TabContainer"
-	TabContainer.Size = UDim2.new(0, 120, 1, -30)
-	TabContainer.Position = UDim2.new(0, 0, 0, 30)
-	TabContainer.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-	TabContainer.BorderSizePixel = 0
-	TabContainer.Parent = MainFrame
+	local TabContainer = Instance.new("Frame") TabContainer.Name = "TabContainer" TabContainer.Size = UDim2.new(0, 120, 1, -30) TabContainer.Position = UDim2.new(0, 0, 0, 30) TabContainer.BackgroundColor3 = Color3.fromRGB(90, 20, 20) TabContainer.BackgroundTransparency = 0.55 TabContainer.BorderSizePixel = 0 TabContainer.Parent = MainFrame
 
 	local UICornerTabContainer = Instance.new("UICorner")
 	UICornerTabContainer.CornerRadius = UDim.new(0, 8)
@@ -101,10 +96,11 @@ function UILibrary.new(title)
 	TabButtonPadding.PaddingBottom = UDim.new(0, 10)
 	TabButtonPadding.Parent = TabButtonHolder
 
-	local ContentContainer = Instance.new("Frame") ContentContainer.Name = "ContentContainer" ContentContainer.Size = UDim2.new(1, -130, 1, -40) ContentContainer.Position = UDim2.new(0, 125, 0, 35) ContentContainer.BackgroundColor3 = Color3.fromRGB(30, 30, 30) ContentContainer.BackgroundTransparency = 0.6 -- <---- NEW LINE FOR TRANSPARENCY ContentContainer.BorderSizePixel = 0 ContentContainer.ClipsDescendants = true ContentContainer.Parent = MainFrame
+	local ContentContainer = Instance.new("Frame") ContentContainer.Name = "ContentContainer" ContentContainer.Size = UDim2.new(1, -130, 1, -40) ContentContainer.Position = UDim2.new(0, 125, 0, 35) ContentContainer.BackgroundColor3 = Color3.fromRGB(90, 20, 20) ContentContainer.BackgroundTransparency = 0.55 ContentContainer.BorderSizePixel = 0 ContentContainer.ClipsDescendants = true ContentContainer.Parent = MainFrame
 	
 	local Frame = Instance.new("Frame")
-Frame.Parent = TabContainer
+
+	Frame.Parent = game.Players.LocalPlayer.PlayerGui.ModernUI.MainFrame.TabContainer
 	Frame.AnchorPoint = Vector2.new(1, 1)
 	Frame.BackgroundColor3 = Color3.new(0.12549, 0.12549, 0.12549)
 	Frame.BorderColor3 = Color3.new(0, 0, 0)

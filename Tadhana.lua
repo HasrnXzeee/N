@@ -104,8 +104,7 @@ function UILibrary.new(title)
 	local ContentContainer = Instance.new("Frame") ContentContainer.Name = "ContentContainer" ContentContainer.Size = UDim2.new(1, -130, 1, -40) ContentContainer.Position = UDim2.new(0, 125, 0, 35) ContentContainer.BackgroundColor3 = Color3.fromRGB(30, 30, 30) ContentContainer.BackgroundTransparency = 0.6 -- <---- NEW LINE FOR TRANSPARENCY ContentContainer.BorderSizePixel = 0 ContentContainer.ClipsDescendants = true ContentContainer.Parent = MainFrame
 	
 	local Frame = Instance.new("Frame")
-
-	Frame.Parent = game.Players.LocalPlayer.PlayerGui.ModernUI.MainFrame.TabContainer
+Frame.Parent = TabContainer
 	Frame.AnchorPoint = Vector2.new(1, 1)
 	Frame.BackgroundColor3 = Color3.new(0.12549, 0.12549, 0.12549)
 	Frame.BorderColor3 = Color3.new(0, 0, 0)

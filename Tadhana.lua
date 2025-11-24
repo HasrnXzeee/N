@@ -270,6 +270,18 @@ function UILibrary:Tab(name, icon)
 		self:SelectTab(name)
 	end
 
+tab.Button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+tab.Button.BackgroundTransparency = 0.65
+
+-- After tab.Content is created, add image at top:
+local TopImage = Instance.new("ImageLabel")
+TopImage.Name = "TopImage"
+TopImage.Size = UDim2.new(1, -20, 0, 100)
+TopImage.Position = UDim2.new(0, 10, 0, 0)
+TopImage.BackgroundTransparency = 1
+TopImage.Image = "https://www.roblox.com/Thumbs/Asset.ashx?width=420&height=420&assetId=103525825916167"
+TopImage.Parent = tab.Content
+
 	local sectionFunctions = {}
 
 	function sectionFunctions:Button(text, callback)

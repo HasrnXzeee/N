@@ -13,7 +13,8 @@ function UILibrary.new(title)
 	ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-	local MainFrame = Instance.new("Frame") MainFrame.Name = "MainFrame" MainFrame.Size = UDim2.new(0, 500, 0, 350) MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175) MainFrame.BackgroundColor3 = Color3.fromRGB(90, 20, 20) MainFrame.BackgroundTransparency = 0.55 MainFrame.BorderSizePixel = 0 MainFrame.Parent = ScreenGui 
+	local MainFrame = Instance.new("Frame") MainFrame.Name = "MainFrame" MainFrame.Size = UDim2.new(0, 500, 0, 350) MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175) MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40) -- Slightly lighter for glass MainFrame.BackgroundTransparency = 0.65 -- 65% transparent glass MainFrame.BorderSizePixel = 0 
+ MainFrame.Parent = ScreenGui 
 
 
 	local UICorner = Instance.new("UICorner")
@@ -35,8 +36,8 @@ function UILibrary.new(title)
 	local TitleBar = Instance.new("Frame")
 	TitleBar.Name = "TitleBar"
 	TitleBar.Size = UDim2.new(1, 0, 0, 30)
-	TitleBar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-	TitleBar.BorderSizePixel = 0
+	TitleBar.BackgroundColor3 = Color3.fromRGB(40, 40, 40) TitleBar.BackgroundTransparency = 0.65 TitleBar.BorderSizePixel = 0 
+
 	TitleBar.Parent = MainFrame
 
 	local UICornerTitle = Instance.new("UICorner")
@@ -66,7 +67,7 @@ function UILibrary.new(title)
 	CloseButton.Text = "×"
 	CloseButton.Parent = TitleBar
 
-	local TabContainer = Instance.new("Frame") TabContainer.Name = "TabContainer" TabContainer.Size = UDim2.new(0, 120, 1, -30) TabContainer.Position = UDim2.new(0, 0, 0, 30) TabContainer.BackgroundColor3 = Color3.fromRGB(90, 20, 20) TabContainer.BackgroundTransparency = 0.55 TabContainer.BorderSizePixel = 0 TabContainer.Parent = MainFrame
+	local TabContainer = Instance.new("Frame") TabContainer.Name = "TabContainer" TabContainer.Size = UDim2.new(0, 120, 1, -30) TabContainer.Position = UDim2.new(0, 0, 0, 30) TabContainer.BackgroundColor3 = Color3.fromRGB(40, 40, 40) TabContainer.BackgroundTransparency = 0.65 TabContainer.BorderSizePixel = 0 TabContainer.Parent = MainFrame
 
 	local UICornerTabContainer = Instance.new("UICorner")
 	UICornerTabContainer.CornerRadius = UDim.new(0, 8)
@@ -96,7 +97,7 @@ function UILibrary.new(title)
 	TabButtonPadding.PaddingBottom = UDim.new(0, 10)
 	TabButtonPadding.Parent = TabButtonHolder
 
-	local ContentContainer = Instance.new("Frame") ContentContainer.Name = "ContentContainer" ContentContainer.Size = UDim2.new(1, -130, 1, -40) ContentContainer.Position = UDim2.new(0, 125, 0, 35) ContentContainer.BackgroundColor3 = Color3.fromRGB(90, 20, 20) ContentContainer.BackgroundTransparency = 0.55 ContentContainer.BorderSizePixel = 0 ContentContainer.ClipsDescendants = true ContentContainer.Parent = MainFrame
+	local ContentContainer = Instance.new("Frame") ContentContainer.Name = "ContentContainer" ContentContainer.Size = UDim2.new(1, -130, 1, -40) ContentContainer.Position = UDim2.new(0, 125, 0, 35) ContentContainer.BackgroundColor3 = Color3.fromRGB(40, 40, 40) ContentContainer.BackgroundTransparency = 0.65 ContentContainer.BorderSizePixel = 0 ContentContainer.ClipsDescendants = true ContentContainer.Parent = MainFrame
 	
 	local Frame = Instance.new("Frame")
 
@@ -284,7 +285,7 @@ function UILibrary:Tab(name, icon)
 		local Button = Instance.new("TextButton")
 		Button.Name = text.."Button"
 		Button.Size = UDim2.new(1, 0, 1, 0)
-		Button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+		Button.BackgroundColor3 = Color3.fromRGB(40, 40, 40) Button.BackgroundTransparency = 0.65 
 		Button.BorderSizePixel = 0
 		Button.Text = ""
 		Button.AutoButtonColor = false
@@ -359,7 +360,7 @@ function UILibrary:Tab(name, icon)
 		local TextBoxContainer = Instance.new("Frame")
 		TextBoxContainer.Name = text.."TextBoxContainer"
 		TextBoxContainer.Size = UDim2.new(1, 0, 1, 0)
-		TextBoxContainer.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+		TextBoxContainer.BackgroundColor3 = Color3.fromRGB(40, 40, 40) TextBoxContainer.BackgroundTransparency = 0.65 
 		TextBoxContainer.BorderSizePixel = 0
 		TextBoxContainer.Parent = TextBoxFrame
 
@@ -453,7 +454,7 @@ function UILibrary:Tab(name, icon)
 		local Dropdown = Instance.new("Frame")
 		Dropdown.Name = text.."Dropdown"
 		Dropdown.Size = UDim2.new(1, 0, 0, 56)
-		Dropdown.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+		Dropdown.BackgroundColor3 = Color3.fromRGB(40, 40, 40) Dropdown.BackgroundTransparency = 0.65
 		Dropdown.BorderSizePixel = 0
 		Dropdown.Parent = DropdownFrame
 
